@@ -1,8 +1,7 @@
 import { gql } from "@/apollo/__generated__/";
 import { Purchase } from "@/apollo/__generated__/graphql";
 import { useQuery } from "@apollo/client";
-import { TextInput } from "react-native-gesture-handler";
-import { ScrollView } from "react-native-gesture-handler";
+import { TextInput, ScrollView } from "react-native-gesture-handler";
 import { useForm, SubmitHandler } from "react-hook-form";
 
 enum PaymentMethod {
@@ -18,14 +17,14 @@ interface IFormInput {
   paymentMethod: PaymentMethod;
 }
 
-export function TabTwoScreen() {
+export default function TabTwoScreen() {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data) => console.log(data);
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {};
   return (
     <ScrollView>
       <form onSubmit={handleSubmit(onSubmit)}>
