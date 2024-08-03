@@ -1,8 +1,8 @@
 import { gql } from "@/apollo/__generated__/";
 import { Purchase } from "@/apollo/__generated__/graphql";
-import { useQuery } from "@apollo/client";
-import { TextInput, ScrollView } from "react-native-gesture-handler";
+import { ScrollView } from "react-native-gesture-handler";
 import { useForm, SubmitHandler } from "react-hook-form";
+import { useMutation } from "@apollo/client";
 
 enum PaymentMethod {
   "debit-card" = "Debit Card",
@@ -11,20 +11,48 @@ enum PaymentMethod {
 }
 
 interface IFormInput {
-  amount: Number;
+  amount: number;
   article: string;
   category: string;
   paymentMethod: PaymentMethod;
 }
 
+const CREATE_PURCHASE = gql(`
+  mutation CreatePurchase($purchaseInput: PurchaseInput){
+    createPurchase(purchaseInput: $purchaseInput) {
+      id,
+      amount,
+      paymentMethod,
+      article,
+      date,
+    }
+  }
+`);
+
 export default function TabTwoScreen() {
+  const [createPurchase, { loading, error, data }] =
+    useMutation(CREATE_PURCHASE);
+
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm<IFormInput>();
-  const onSubmit: SubmitHandler<IFormInput> = (data) => {};
+  const onSubmit: SubmitHandler<IFormInput> = (data) => {
+    const purchaseInput = {
+      ...data,
+      amount: Number(data.amount),
+      category: data.category.replaceAll(" ", "-").toLocaleLowerCase(),
+      date: Date.now(),
+    };
+    console.log(data);
+    createPurchase({
+      variables: {
+        purchaseInput,
+      },
+    });
+  };
   return (
     <ScrollView>
       <form onSubmit={handleSubmit(onSubmit)}>
@@ -43,6 +71,9 @@ export default function TabTwoScreen() {
         </select>
         <input type="submit" />
       </form>
+      {loading && "Loading"}
+      {error && `Error: ${error.message}`}
+      {data && JSON.stringify(data, null, 2)}
     </ScrollView>
   );
 }

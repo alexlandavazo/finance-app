@@ -65,10 +65,18 @@ export type Query = {
   getPurchases: Array<Purchase>;
 };
 
+export type CreatePurchaseMutationVariables = Exact<{
+  purchaseInput?: InputMaybe<PurchaseInput>;
+}>;
+
+
+export type CreatePurchaseMutation = { __typename?: 'Mutation', createPurchase: { __typename?: 'Purchase', id: string, amount: number, paymentMethod: string, article: string, date: any } };
+
 export type GetPurchasesQueryVariables = Exact<{ [key: string]: never; }>;
 
 
 export type GetPurchasesQuery = { __typename?: 'Query', getPurchases: Array<{ __typename?: 'Purchase', id: string, date: any, amount: number, paymentMethod: string, article: string, category?: string | null }> };
 
 
+export const CreatePurchaseDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"CreatePurchase"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"purchaseInput"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"PurchaseInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"createPurchase"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"purchaseInput"},"value":{"kind":"Variable","name":{"kind":"Name","value":"purchaseInput"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"paymentMethod"}},{"kind":"Field","name":{"kind":"Name","value":"article"}},{"kind":"Field","name":{"kind":"Name","value":"date"}}]}}]}}]} as unknown as DocumentNode<CreatePurchaseMutation, CreatePurchaseMutationVariables>;
 export const GetPurchasesDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetPurchases"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"getPurchases"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"date"}},{"kind":"Field","name":{"kind":"Name","value":"amount"}},{"kind":"Field","name":{"kind":"Name","value":"paymentMethod"}},{"kind":"Field","name":{"kind":"Name","value":"article"}},{"kind":"Field","name":{"kind":"Name","value":"category"}}]}}]}}]} as unknown as DocumentNode<GetPurchasesQuery, GetPurchasesQueryVariables>;
