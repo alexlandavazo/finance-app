@@ -1,17 +1,24 @@
+import { Text } from "@/components/ui/text";
+import { Box } from "@/components/ui/box";
+import { Button } from "@/components/ui/button";
+import { Input, InputField } from "@/components/ui/input";
+import {
+  Select,
+  SelectBackdrop,
+  SelectContent,
+  SelectDragIndicator,
+  SelectDragIndicatorWrapper,
+  SelectIcon,
+  SelectInput,
+  SelectItem,
+  SelectPortal,
+  SelectTrigger,
+} from "@/components/ui/select";
+import React from "react";
+
 import { gql } from "@/apollo/__generated__/";
-import { Purchase } from "@/apollo/__generated__/graphql";
-import { ScrollView } from "react-native-gesture-handler";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useMutation } from "@apollo/client";
-import {
-  Button,
-  Input,
-  Text,
-  Select,
-  SelectItem,
-  Layout,
-  IndexPath,
-} from "@ui-kitten/components";
 import { useState } from "react";
 
 enum PaymentMethod {
@@ -19,14 +26,12 @@ enum PaymentMethod {
   "credit-card" = "Credit Card",
   "cash" = "Cash",
 }
-
 interface IFormInput {
   amount: number;
   article: string;
   category: string;
   paymentMethod: PaymentMethod;
 }
-
 const CREATE_PURCHASE = gql(`
   mutation CreatePurchase($purchaseInput: PurchaseInput){
     createPurchase(purchaseInput: $purchaseInput) {
@@ -38,13 +43,9 @@ const CREATE_PURCHASE = gql(`
     }
   }
 `);
-
 export default function TabTwoScreen() {
   const [createPurchase, { loading, error, data }] =
     useMutation(CREATE_PURCHASE);
-
-  const [paymentIndex, setPaymentIndex] = useState(new IndexPath(0));
-
   const {
     register,
     handleSubmit,
@@ -66,21 +67,51 @@ export default function TabTwoScreen() {
       },
     });
   };
-  console.log(rest);
   return (
-    <Layout
-      style={{ flex: 1, justifyContent: "center", paddingHorizontal: 20 }}
-    >
+    <Box className="flex justify-center px-5">
       <form>
         <Text>Amount:</Text>
-        <Input onChangeText={(value) => setValue("amount", +value)} />
+        <Input>
+          <InputField onChangeText={(value) => setValue("amount", +value)} />
+        </Input>
         <Text>Article:</Text>
-        <Input onChangeText={(value) => setValue("article", value)} />
+        <Input>
+          <InputField
+            onChangeText={(value) => setValue("article", value)}
+            placeholder="Enter Text here..."
+          />
+        </Input>
 
         <Text>Category:</Text>
-        <Input onChangeText={(value) => setValue("category", value)} />
+        <Input>
+          <InputField onChangeText={(value) => setValue("category", value)} />
+        </Input>
         <Text>Payment Method</Text>
-        <Select
+
+        <Select>
+          <SelectTrigger variant="outline" size="md">
+            <SelectInput placeholder="Select option" />
+            <SelectIcon className="mr-3" />
+          </SelectTrigger>
+          <SelectPortal>
+            <SelectBackdrop />
+            <SelectContent>
+              <SelectDragIndicatorWrapper>
+                <SelectDragIndicator />
+              </SelectDragIndicatorWrapper>
+              <SelectItem label="UX Research" value="ux" />
+              <SelectItem label="Web Development" value="web" />
+              <SelectItem
+                label="Cross Platform Development Process"
+                value="Cross Platform Development Process"
+              />
+              <SelectItem label="UI Designing" value="ui" isDisabled={true} />
+              <SelectItem label="Backend Development" value="backend" />
+            </SelectContent>
+          </SelectPortal>
+        </Select>
+
+        {/* <Select
           selectedIndex={paymentIndex}
           value={paymentIndex.row}
           onSelect={(index) => {
@@ -91,12 +122,12 @@ export default function TabTwoScreen() {
           <SelectItem title="Debit Card" />
           <SelectItem title="Credit Card" />
           <SelectItem title="Cash" />
-        </Select>
+        </Select> */}
         <Button onPress={handleSubmit(onSubmit)}>Submit</Button>
       </form>
       {loading && "Loading"}
       {error && `Error: ${error.message}`}
       {data && JSON.stringify(data, null, 2)}
-    </Layout>
+    </Box>
   );
 }

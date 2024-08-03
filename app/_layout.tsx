@@ -33,11 +33,13 @@ export default function RootLayout() {
   }
 
   return (
-    <GluestackUIProvider mode="light"><ApolloProvider client={client}>
+    <GluestackUIProvider mode="light">
+      <ApolloProvider client={client}>
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen name="+not-found" />
         </Stack>
-      </ApolloProvider></GluestackUIProvider>
+      </ApolloProvider>
+    </GluestackUIProvider>
   );
 }
