@@ -1,10 +1,5 @@
-import { Image, StyleSheet, Platform } from "react-native";
 import { useQuery } from "@apollo/client";
 
-import { HelloWave } from "@/components/HelloWave";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import { ThemedText } from "@/components/ThemedText";
-import { ThemedView } from "@/components/ThemedView";
 import { ScrollView } from "react-native-gesture-handler";
 import { PieChart } from "react-native-chart-kit";
 import { gql } from "@/apollo/__generated__";
@@ -22,6 +17,12 @@ const GET_PURCHASES = gql(`
   }
 `);
 
+interface PurchaseByCategory {
+  name: string;
+  amount: number;
+  color: string;
+}
+
 export default function HomeScreen() {
   const { loading, error, data } = useQuery(GET_PURCHASES);
 
@@ -33,12 +34,34 @@ export default function HomeScreen() {
     amount: purchase.amount,
     color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
   }));
+  const purchasesByCategory = data?.getPurchases.reduce(
+    (purchasesArray: PurchaseByCategory[], purchase) => {
+      const purchaseIndex = purchasesArray.findIndex(
+        (p) => p.name === purchase.category
+      );
+
+      if (purchaseIndex === -1) {
+        return [
+          ...purchasesArray,
+          {
+            name: purchase.category,
+            amount: purchase.amount,
+            color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+          },
+        ];
+      }
+      purchasesArray[purchaseIndex].amount += purchase.amount;
+      return purchasesArray;
+    },
+    []
+  );
+
   return (
     <ScrollView>
       <PieChart
         backgroundColor="transparent"
         accessor="amount"
-        data={purchases ?? []}
+        data={purchasesByCategory ?? []}
         chartConfig={{
           color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
