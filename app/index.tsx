@@ -38,11 +38,12 @@ export default function HomeScreen() {
   if (loading) return <Text>Loading...</Text>;
   if (error) return <Text>Error: {error.message}</Text>;
 
-  const purchases = data?.getPurchases.map((purchase) => ({
-    name: purchase.category,
-    amount: purchase.amount,
-    color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
-  }));
+  const categoryColor = {
+    "uso-personal": "rgb(107 114 128)",
+    comida: "rgb(229 231 235)",
+    libros: "rgb(0,0,0)",
+  };
+
   const purchasesByCategory = data?.getPurchases.reduce(
     (purchasesArray: PurchaseByCategory[], purchase) => {
       const purchaseIndex = purchasesArray.findIndex(
@@ -55,7 +56,7 @@ export default function HomeScreen() {
           {
             name: purchase.category,
             amount: purchase.amount,
-            color: `#${Math.floor(Math.random() * 16777215).toString(16)}`,
+            color: categoryColor[purchase.category as never],
           },
         ];
       }
@@ -79,7 +80,7 @@ export default function HomeScreen() {
         width={400}
         height={400}
       />
-      <Box className="h-full gap-y-2 rounded-t-xl bg-white p-5">
+      <Box className="h-full gap-y-2 rounded-t-3xl bg-white p-5">
         <Heading size="md" className="mb-1">
           Compras
         </Heading>
