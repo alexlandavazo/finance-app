@@ -52,13 +52,13 @@ export default function RootLayout() {
           <Stack.Screen
             name="index"
             options={{
-              title: "Activity",
+              title: "Lista de Compras",
             }}
           />
           <Stack.Screen
             name="add-purchase"
             options={{
-              title: "Add Purchase",
+              title: "Agregar Compra",
             }}
           />
           <Stack.Screen name="+not-found" />
