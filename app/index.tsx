@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { router } from "expo-router";
-import { ScrollView } from "react-native-gesture-handler";
+import { FlatList, StyleSheet } from "react-native";
 import { PieChart } from "react-native-chart-kit";
 import Ionicons from "@expo/vector-icons/Ionicons";
 
@@ -79,27 +79,18 @@ export default function HomeScreen() {
         width={400}
         height={400}
       />
-      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
-        <Box className="h-full gap-y-2 rounded-t-xl bg-white p-5">
-          <Heading size="md" className="mb-1">
-            Transactions
-          </Heading>
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-          <TransactionCard />
-        </Box>
-      </ScrollView>
+      <Box className="h-full gap-y-2 rounded-t-xl bg-white p-5">
+        <Heading size="md" className="mb-1">
+          Compras
+        </Heading>
+        <FlatList
+          data={data?.getPurchases}
+          renderItem={({ item: purchase }) => (
+            <TransactionCard purchase={purchase} />
+          )}
+          keyExtractor={(purchase) => purchase.id}
+        />
+      </Box>
       <Fab
         size="lg"
         className="bottom-4 right-4"
