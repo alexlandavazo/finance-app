@@ -23,7 +23,7 @@ import {
 } from "@/components/ui/select";
 import { gql } from "@/apollo/__generated__/";
 
-enum PaymentMethod {
+export enum PaymentMethod {
   "debit-card" = "Debit Card",
   "credit-card" = "Credit Card",
   "cash" = "Cash",
