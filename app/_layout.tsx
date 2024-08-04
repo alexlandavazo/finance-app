@@ -35,8 +35,32 @@ export default function RootLayout() {
   return (
     <GluestackUIProvider mode="light">
       <ApolloProvider client={client}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+        <Stack
+          screenOptions={{
+            headerStyle: {
+              backgroundColor: "transparent",
+            },
+            headerShadowVisible: false,
+            headerTintColor: "#000",
+            headerTitleStyle: {
+              fontWeight: "semibold",
+            },
+            headerTitleAlign: "center",
+            headerBackButtonMenuEnabled: true,
+          }}
+        >
+          <Stack.Screen
+            name="index"
+            options={{
+              title: "Activity",
+            }}
+          />
+          <Stack.Screen
+            name="add-purchase"
+            options={{
+              title: "Add Purchase",
+            }}
+          />
           <Stack.Screen name="+not-found" />
         </Stack>
       </ApolloProvider>
